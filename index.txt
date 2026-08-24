@@ -131,6 +131,10 @@
       background: rgba(209, 73, 73, 0.08);
     }
 
+    .mobile-footer-reset {
+      display: none;
+    }
+
     .theme-toggle-btn {
       background: transparent;
       border: 1px solid var(--border-color);
@@ -455,6 +459,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 10px;
+      position: relative;
     }
 
     .nav-btn-link {
@@ -474,6 +479,10 @@
       display: flex;
       align-items: center;
       gap: 15px;
+    }
+
+    .summary-center-actions {
+      display: none;
     }
 
     .daily-card-view {
@@ -903,12 +912,100 @@
       font-weight: 500;
       text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
+
+    /* =========================================================
+       MODIFICHE ESCLUSIVAMENTE PER SMARTPHONE E TABLET (<= 768px)
+       ========================================================= */
+    @media (max-width: 768px) {
+      /* Hero screen top actions */
+      .hero-theme-wrapper {
+        position: absolute;
+        top: 65px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+      }
+
+      .top-right-actions {
+        top: 20px;
+        left: 0;
+        right: 0;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .top-right-actions .btn-reset-profile {
+        display: none; /* nascosto in alto su mobile */
+      }
+
+      /* Footer reset button su mobile */
+      .mobile-footer-reset {
+        display: block;
+        margin-top: auto;
+        margin-bottom: 25px;
+        text-align: center;
+        z-index: 20;
+      }
+
+      /* Scelta Colori e Scelta Meteo su mobile (Strisce Orizzontali) */
+      .fullscreen-columns {
+        flex-direction: column;
+        padding-top: 70px; /* Spazio per l'header del titolo */
+      }
+
+      .col-card {
+        width: 100%;
+        height: 20%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .col-card:last-child {
+        border-bottom: none;
+      }
+
+      .col-card:hover {
+        flex: 1.5;
+      }
+
+      .col-label {
+        font-size: 1.1rem;
+      }
+
+      /* Header Scheda Finale (Summary) su Mobile */
+      .summary-header-nav {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding-top: 10px;
+      }
+
+      .summary-right-actions .btn-reset-profile {
+        display: none; /* Nascosto in alto su mobile */
+      }
+
+      .summary-center-actions {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        order: 3;
+        margin-top: 5px;
+      }
+
+      .daily-card-view {
+        padding: 25px 20px;
+      }
+    }
   </style>
 </head>
 <body data-theme="dark">
 
   <!-- HERO -->
   <section id="heroScreen">
+    <div class="top-right-actions">
+      <button class="btn-settings-top" id="btnSettingsHero">Impostazioni Colori</button>
+      <button class="btn-reset-discreet btn-reset-profile" title="Elimina del tutto il profilo">Reset Profilo</button>
+    </div>
+
     <div class="hero-theme-wrapper">
       <button class="theme-toggle-btn btn-theme-toggle" title="Cambia Modalità Light/Dark">
         <svg class="icon-moon" viewBox="0 0 24 24"><path d="M12.3 2a10 10 0 0 0 9.7 11.5 10 10 0 1 1-11.5-9.7z"/></svg>
@@ -916,14 +1013,16 @@
       </button>
     </div>
 
-    <div class="top-right-actions">
-      <button class="btn-settings-top" id="btnSettingsHero">Impostazioni Colori</button>
-      <button class="btn-reset-discreet btn-reset-profile" title="Elimina del tutto il profilo">Reset Profilo</button>
+    <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+      <h1 class="hero-title" id="heroTitle">come ti senti oggi?</h1>
+      <div class="streak-badge hero-streak" id="heroStreak">🔥 Streak: 0 giorni</div>
+      <p class="hero-subtitle" id="heroSubtitle">clicca per iniziare</p>
     </div>
 
-    <h1 class="hero-title" id="heroTitle">come ti senti oggi?</h1>
-    <div class="streak-badge hero-streak" id="heroStreak">🔥 Streak: 0 giorni</div>
-    <p class="hero-subtitle" id="heroSubtitle">clicca per iniziare</p>
+    <!-- Reset Profilo Footer su Mobile -->
+    <div class="mobile-footer-reset">
+      <button class="btn-reset-discreet btn-reset-profile" title="Elimina del tutto il profilo">Reset Profilo</button>
+    </div>
   </section>
 
   <!-- SETUP -->
@@ -1015,10 +1114,12 @@
     <div class="summary-header-nav">
       <button class="nav-btn-link" id="btnBackHome">← Schermata Iniziale</button>
       
-      <button class="theme-toggle-btn btn-theme-toggle" title="Cambia Modalità Light/Dark">
-        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M12.3 2a10 10 0 0 0 9.7 11.5 10 10 0 1 1-11.5-9.7z"/></svg>
-        <svg class="icon-sun hidden" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
-      </button>
+      <div class="summary-center-actions">
+        <button class="theme-toggle-btn btn-theme-toggle" title="Cambia Modalità Light/Dark">
+          <svg class="icon-moon" viewBox="0 0 24 24"><path d="M12.3 2a10 10 0 0 0 9.7 11.5 10 10 0 1 1-11.5-9.7z"/></svg>
+          <svg class="icon-sun hidden" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+        </button>
+      </div>
 
       <div class="summary-right-actions">
         <button class="nav-btn-link" id="btnSettingsSummary">Impostazioni Colori</button>
@@ -1061,6 +1162,11 @@
         <button class="btn-expand-grid" id="btnOpenModal">Ingrandisci Griglia Anno ⤢</button>
       </div>
       <div class="rotation-carousel" id="rotationCarousel"></div>
+    </div>
+
+    <!-- Reset Profilo Footer su Mobile per la Summary -->
+    <div class="mobile-footer-reset" style="margin-top: 15px; margin-bottom: 10px;">
+      <button class="btn-reset-discreet btn-reset-profile" title="Elimina del tutto il profilo">Reset Profilo</button>
     </div>
   </section>
 
